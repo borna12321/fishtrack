@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\BelongsToTeammates;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class FishCatch extends Model
 {
-    use HasFactory;
+    use HasFactory,BelongsToTeammates;
 
     protected $fillable = [
         'fish_id',

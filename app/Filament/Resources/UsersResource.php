@@ -71,7 +71,7 @@ class UsersResource extends Resource
             TextColumn::make('email')->searchable(),
             TextColumn::make('team')
                 ->getStateUsing(function(User $record): string {
-                    dd($record->showTeammates()->where('id'));
+                    //dd($record->getTeammates());
                     //dd($record->getTeammates(2));
                     return $record->teams->pluck('name')->join(', '); // Joins team names with a comma
                 })
@@ -102,10 +102,7 @@ class UsersResource extends Resource
             ]);
     }
 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()->whereNot('id',1);
-    }
+
 
 
 

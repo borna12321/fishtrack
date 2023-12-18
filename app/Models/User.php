@@ -5,8 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
+use App\Traits\BelongsToTeammates;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 
@@ -16,12 +15,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+use Illuminate\Support\Collection;
 use Laravel\Sanctum\HasApiTokens;
 
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, BelongsToTeammates;
 
 
     protected $fillable = [
@@ -51,24 +51,23 @@ class User extends Authenticatable
     {
         return $this->hasMany(FishCatch::class);
     }
-    public function getTeammates(): \Illuminate\Support\Collection
+    public function getTeammates(): Collection
     {
 
-        $teams = $this->teams;
-        $teammates = $teams->map(function($team){
-            return $team->users()->where('users.id', '!=', $this->id)->get();
-        })->flatten();
-        return $teammates->unique('id');
+
+        return $this->teams()->with('users')->get()->pluck('users')->flatten()->reject(function($user){
+            return $user->id === auth()->id();
+        })->unique('name');
     }
 
-    public function showTeammates()
-    {
-        $userId=2;
-        $user = User::find($userId);
-
-        return $teammates = $user->getTeammates();
-
-    }
+//    public function showTeammates()
+//    {
+//        $userId=2;
+//        $user = User::find($userId);
+//
+//        return $teammates = $user->getTeammates();
+//
+//    }
 
 
 

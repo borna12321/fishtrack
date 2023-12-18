@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\FishCatchResource\Pages;
 use App\Models\FishCatch;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -46,9 +47,7 @@ class FishCatchResource extends Resource
                 ->required()
                 ->numeric(),
 
-            DatePicker::make('date'),
-
-            DatePicker::make('time'),
+            DateTimePicker::make('datetime'),
 
             Placeholder::make('created_at')
                 ->label('Created Date')
